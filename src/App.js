@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import "./styles.css";
-import TodoItem from "./components/TodoItem";
+import TodoList from "./components/TodoList";
 import todosData from "./todosData";
-import Filters from "./components/Filters";
+import Tabs from "./components/Tabs";
+import Form from "./components/Form";
 
 export default class App extends Component {
   constructor() {
@@ -29,7 +30,6 @@ export default class App extends Component {
   };
 
   handleDelete = id => {
-    console.log(id);
     this.setState(prevState => {
       const updatedTodos = prevState.todos.filter(todo => todo.id !== id);
       return {
@@ -38,23 +38,54 @@ export default class App extends Component {
     });
   };
 
-  render() {
-    const todoItems = this.state.todos.map(item => (
-      <TodoItem
-        key={item.id}
-        id={item.id}
-        text={item.text}
-        completed={item.completed}
-        handleChange={this.handleChange}
-        handleDelete={this.handleDelete}
-      />
-    ));
+  handleChangeTab = tab => {
+    this.setState({
+      activeTab: tab
+    });
+  };
 
+  handleForm = text => {
+    this.setState(prevState => {
+      const updatedTodos = [
+        ...prevState.todos,
+        {
+          id: Math.random()
+            .toString(16)
+            .slice(-6),
+          text: text,
+          completed: false
+        }
+      ];
+      return { todos: updatedTodos };
+    });
+  };
+
+  render() {
     return (
       <div>
-        <Filters />
-        <div className="todo-list">{todoItems}</div>
+        <Tabs
+          activeTab={this.state.activeTab}
+          handleChangeTab={this.handleChangeTab}
+        />
+        <TodoList
+          todos={this.filteredTodos}
+          handleChange={this.handleChange}
+          handleDelete={this.handleDelete}
+        />
+        <Form handleForm={this.handleForm} />
       </div>
     );
+  }
+
+  get filteredTodos() {
+    const { todos, activeTab } = this.state;
+    let filteredTodos;
+
+    if (activeTab === "undone") {
+      filteredTodos = todos.filter(todo => todo.completed !== true);
+    } else if (activeTab === "done") {
+      filteredTodos = todos.filter(todo => todo.completed !== false);
+    } else filteredTodos = todos;
+    return filteredTodos;
   }
 }

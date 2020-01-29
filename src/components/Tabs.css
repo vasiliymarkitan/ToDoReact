@@ -1,4 +1,4 @@
-.filters {
+.tabs {
   text-align: center;
   display: flex;
   width: 70%;
@@ -6,7 +6,7 @@
   padding: 30px 20px 0;
 }
 
-.filters div {
+.tabs__item {
   width: calc(100% / 3);
   cursor: pointer;
   padding: 25px;
@@ -15,6 +15,10 @@
   font-size: 12px;
 }
 
-.filters div:hover {
+.tabs__item_active {
+  background-color: rgb(241, 235, 226);
+}
+
+.tabs__item:hover {
   background-color: antiquewhite;
 }

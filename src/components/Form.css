@@ -1,0 +1,8 @@
+.todo-form {
+  width: 50%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  height: 50px;
+  align-items: center;
+}
